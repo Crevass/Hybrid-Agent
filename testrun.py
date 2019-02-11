@@ -51,7 +51,7 @@ UPDATE_TAU = 0.2
 
 # file operation
 Restore_Iter = 12749
-START_ITER = Restore_Iter + 1
+START_ITER = 0
 
 
 def record_video(model, env, replay, test_turn=3):
@@ -152,8 +152,9 @@ def main():
 	saver = tf.train.Saver(tf.global_variables())
 
 	###### restore parameters ###################
-	saver.restore(sess, "./tf_saver/save_params-"+str(Restore_Iter))
-	print("network params restored")
+	if Restore_Iter:
+		saver.restore(sess, "./tf_saver/save_params-"+str(Restore_Iter))
+		print("network params restored")
 	#############################################
 
 
@@ -169,13 +170,13 @@ def main():
 	record = np.zeros(shape=[MAX_ITER], dtype=np.float32)
 
 	# load record array
+	"""
 	record[:] = np.load("rewards.npy")[:MAX_ITER]
-	#
 	assert record[Restore_Iter] != 0
 	assert record[START_ITER] == 0
 	print("record restored")
 	replay.restore_replays("./replays")
-
+	"""
 
 	# initialize env
 	states[0] = env.reset()
